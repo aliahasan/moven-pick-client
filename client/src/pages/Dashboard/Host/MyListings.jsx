@@ -17,14 +17,13 @@ const MyListings = () => {
     queryKey: ['my-listings', user?.email],
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/my-listings/${user?.email}`)
-
       return data
     },
   })
 
   //   delete
   const { mutateAsync } = useMutation({
-    mutationFn: async id => {
+    mutationFn: async (id) => {
       const { data } = await axiosSecure.delete(`/room/${id}`)
       return data
     },
@@ -36,7 +35,7 @@ const MyListings = () => {
   })
 
   //  Handle Delete
-  const handleDelete = async id => {
+  const handleDelete = async (id) => {
     console.log(id)
     try {
       await mutateAsync(id)

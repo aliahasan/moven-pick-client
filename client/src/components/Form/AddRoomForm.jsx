@@ -54,10 +54,11 @@ const AddRoomForm = ({
               {/* Calender */}
               <DateRange
                 rangeColors={['#F43F5E']}
-                editableDateInputs={true}
                 onChange={item => handleDates(item)}
-                moveRangeOnFirstSelection={false}
                 ranges={[dates]}
+                moveRangeOnFirstSelection={false}
+                editableDateInputs={true}
+                minDate={new Date()}
               />
             </div>
           </div>
@@ -83,7 +84,7 @@ const AddRoomForm = ({
                     <input
                       className='text-sm cursor-pointer w-36 hidden'
                       type='file'
-                      onChange={e => handleImage(e.target.files[0])}
+                      onChange={(e) => handleImage(e.target.files[0])}
                       name='image'
                       id='image'
                       accept='image/*'
