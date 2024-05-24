@@ -1,10 +1,9 @@
-import { format } from "date-fns";
-import PropTypes from "prop-types";
+import { format } from 'date-fns';
 
-const BookingRow = ({ booking, refetch }) => {
-  
-  return (
-    <tr>
+const TableRows = ({booking , refetch}) => {
+    console.log(booking)
+    return (
+        <tr>
       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
         <div className="flex items-center">
           <div className="flex-shrink-0">
@@ -62,12 +61,7 @@ const BookingRow = ({ booking, refetch }) => {
         </span>
       </td>
     </tr>
-  );
+    );
 };
 
-BookingRow.propTypes = {
-  booking: PropTypes.object,
-  refetch: PropTypes.func,
-};
-
-export default BookingRow;
+export default TableRows;

@@ -5,7 +5,6 @@ import { differenceInCalendarDays } from "date-fns";
 import BookingModal from "../Modal/BookingModal";
 import useAuth from "../../hooks/useAuth";
 import { DateRange } from "react-date-range";
-// import Calender from "../Calender/Calender";
 const RoomReservation = ({ room }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -31,7 +30,7 @@ const RoomReservation = ({ room }) => {
   const bookingInfo = {
     guest: {
       name: user?.displayName,
-      email:user?.email,
+      email: user?.email,
       image: user?.photoURL,
     },
     host: room?.host?.email,
@@ -69,18 +68,25 @@ const RoomReservation = ({ room }) => {
       </div>
       <hr />
       <div className="p-4">
-        <Button onClick={() => setIsOpen(!isOpen)} label={"Reserve"} />
+        <Button
+          onClick={() => setIsOpen(!isOpen)}
+          label={"Reserve"}
+          disabled={room.host.email === user?.email || room.booked}
+        />
       </div>
       <hr />
       <div className="p-4 flex items-center justify-between font-semibold text-lg">
         <div>Total</div>
         <div>${totalPrice}</div>
       </div>
-      <BookingModal
-        closeModal={closeModal}
-        isOpen={isOpen}
-        bookingInfo={bookingInfo}
-      ></BookingModal>
+
+      <div>
+        <BookingModal
+          closeModal={closeModal}
+          isOpen={isOpen}
+          bookingInfo={bookingInfo}
+        ></BookingModal>
+      </div>
     </div>
   );
 };

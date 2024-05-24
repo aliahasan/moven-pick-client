@@ -1,29 +1,34 @@
 import { Helmet } from "react-helmet-async";
+import useAuth from "../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
+import { getBookings } from "../../api/booking";
+import LoadingSpinner from "../../components/Shared/LoadingSpinner";
+import BookingRow from "../../components/Dashboard/TableRows/BookingRow";
 
-import LoadingSpinner from "../../../components/Shared/LoadingSpinner";
-
-import UserDataRow from "../../../components/Dashboard/TableRows/UserDataRow";
-import { getAllUsers } from "../../../api/auth";
-const ManageUsers = () => {
-  //   Fetch users Data
+const MyBooking = () => {
+  const { user, loading } = useAuth();
   const {
-    data: users = [],
+    data: bookings = [],
+
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["users"],
-    queryFn: async () => await getAllUsers(),
+    queryKey: ["bookings", user?.email],
+    enabled: !loading,
+    queryFn: async () => await getBookings(user?.email),
   });
 
-  console.log(users);
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner></LoadingSpinner>;
+
+  console.log(bookings);
+
   return (
     <>
+      <Helmet>
+        <title>My Listings</title>
+      </Helmet>
+
       <div className="container mx-auto px-4 sm:px-8">
-        <Helmet>
-          <title>Manage Users</title>
-        </Helmet>
         <div className="py-8">
           <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
             <div className="inline-block min-w-full shadow rounded-lg overflow-hidden">
@@ -34,21 +39,34 @@ const ManageUsers = () => {
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
-                      Email
+                     Title
                     </th>
                     <th
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
-                      Role
+                    Info
+                    </th>
+                    
+                   
+                    <th
+                      scope="col"
+                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                    >
+                      Price
                     </th>
                     <th
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
                     >
-                      Status
+                      From
                     </th>
-
+                    <th
+                      scope="col"
+                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                    >
+                      To
+                    </th>
                     <th
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
@@ -58,13 +76,15 @@ const ManageUsers = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {users.map((user) => (
-                    <UserDataRow
-                      key={user?._id}
-                      user={user}
-                      refetch={refetch}
-                    />
-                  ))}
+                  {/* Room row data */}
+                  {bookings &&
+                    bookings.map((booking) => (
+                      <BookingRow
+                        key={booking._id}
+                        booking={booking}
+                        refetch={refetch}
+                      ></BookingRow>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -75,4 +95,4 @@ const ManageUsers = () => {
   );
 };
 
-export default ManageUsers;
+export default MyBooking;
